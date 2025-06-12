@@ -53,7 +53,7 @@ theorem ManyOneReducible.trans {α β γ} [Primcodable α] [Primcodable β] [Pri
     {p : α → Prop} {q : β → Prop} {r : γ → Prop} : p ≤₀ q → q ≤₀ r → p ≤₀ r
   | ⟨f, c₁, h₁⟩, ⟨g, c₂, h₂⟩ =>
     ⟨g ∘ f, c₂.comp c₁,
-      fun a => ⟨fun h => by erw [← h₂, ← h₁]; assumption, fun h => by rwa [h₁, h₂]⟩⟩
+      fun a => ⟨fun h => by rw [comp_apply, ← h₂, ← h₁]; assumption, fun h => by rwa [h₁, h₂]⟩⟩
 
 theorem reflexive_manyOneReducible {α} [Primcodable α] : Reflexive (@ManyOneReducible α α _ _) :=
   manyOneReducible_refl
@@ -84,7 +84,7 @@ theorem OneOneReducible.trans {α β γ} [Primcodable α] [Primcodable β] [Prim
     {q : β → Prop} {r : γ → Prop} : p ≤₁ q → q ≤₁ r → p ≤₁ r
   | ⟨f, c₁, i₁, h₁⟩, ⟨g, c₂, i₂, h₂⟩ =>
     ⟨g ∘ f, c₂.comp c₁, i₂.comp i₁, fun a =>
-      ⟨fun h => by erw [← h₂, ← h₁]; assumption, fun h => by rwa [h₁, h₂]⟩⟩
+      ⟨fun h => by rw [comp_apply, ← h₂, ← h₁]; assumption, fun h => by rwa [h₁, h₂]⟩⟩
 
 theorem OneOneReducible.to_many_one {α β} [Primcodable α] [Primcodable β] {p : α → Prop}
     {q : β → Prop} : p ≤₁ q → p ≤₀ q
@@ -106,8 +106,7 @@ theorem transitive_oneOneReducible {α} [Primcodable α] : Transitive (@OneOneRe
 
 namespace ComputablePred
 
-variable {α : Type*} {β : Type*} {σ : Type*}
-variable [Primcodable α] [Primcodable β] [Primcodable σ]
+variable {α : Type*} {β : Type*} [Primcodable α] [Primcodable β]
 
 open Computable
 
@@ -246,17 +245,17 @@ open Nat.Primrec
 
 theorem OneOneReducible.disjoin_left {α β} [Primcodable α] [Primcodable β] {p : α → Prop}
     {q : β → Prop} : p ≤₁ p ⊕' q :=
-  ⟨Sum.inl, Computable.sum_inl, fun _ _ => Sum.inl.inj_iff.1, fun _ => Iff.rfl⟩
+  ⟨Sum.inl, Computable.sumInl, fun _ _ => Sum.inl.inj_iff.1, fun _ => Iff.rfl⟩
 
 theorem OneOneReducible.disjoin_right {α β} [Primcodable α] [Primcodable β] {p : α → Prop}
     {q : β → Prop} : q ≤₁ p ⊕' q :=
-  ⟨Sum.inr, Computable.sum_inr, fun _ _ => Sum.inr.inj_iff.1, fun _ => Iff.rfl⟩
+  ⟨Sum.inr, Computable.sumInr, fun _ _ => Sum.inr.inj_iff.1, fun _ => Iff.rfl⟩
 
 theorem disjoin_manyOneReducible {α β γ} [Primcodable α] [Primcodable β] [Primcodable γ]
     {p : α → Prop} {q : β → Prop} {r : γ → Prop} : p ≤₀ r → q ≤₀ r → (p ⊕' q) ≤₀ r
   | ⟨f, c₁, h₁⟩, ⟨g, c₂, h₂⟩ =>
     ⟨Sum.elim f g,
-      Computable.id.sum_casesOn (c₁.comp Computable.snd).to₂ (c₂.comp Computable.snd).to₂,
+      Computable.id.sumCasesOn (c₁.comp Computable.snd).to₂ (c₂.comp Computable.snd).to₂,
       fun x => by cases x <;> [apply h₁; apply h₂]⟩
 
 theorem disjoin_le {α β γ} [Primcodable α] [Primcodable β] [Primcodable γ] {p : α → Prop}
@@ -266,9 +265,7 @@ theorem disjoin_le {α β γ} [Primcodable α] [Primcodable β] [Primcodable γ]
       OneOneReducible.disjoin_right.to_many_one.trans h⟩,
     fun ⟨h₁, h₂⟩ => disjoin_manyOneReducible h₁ h₂⟩
 
-variable {α : Type u} [Primcodable α] [Inhabited α]
-variable {β : Type v} [Primcodable β] [Inhabited β]
-variable {γ : Type w} [Primcodable γ] [Inhabited γ]
+variable {α : Type u} [Primcodable α] [Inhabited α] {β : Type v} [Primcodable β] [Inhabited β]
 
 /-- Computable and injective mapping of predicates to sets of natural numbers.
 -/
@@ -325,7 +322,7 @@ protected theorem liftOn_eq {φ} (p : Set ℕ) (f : Set ℕ → φ)
 @[reducible, simp]
 protected def liftOn₂ {φ} (d₁ d₂ : ManyOneDegree) (f : Set ℕ → Set ℕ → φ)
     (h : ∀ p₁ p₂ q₁ q₂, ManyOneEquiv p₁ p₂ → ManyOneEquiv q₁ q₂ → f p₁ q₁ = f p₂ q₂) : φ :=
-  d₁.liftOn (fun p => d₂.liftOn (f p) fun q₁ q₂ hq => h _ _ _ _ (by rfl) hq)
+  d₁.liftOn (fun p => d₂.liftOn (f p) fun _ _ hq => h _ _ _ _ (by rfl) hq)
     (by
       intro p₁ p₂ hp
       induction d₂ using ManyOneDegree.ind_on

@@ -3,7 +3,7 @@ Copyright (c) 2022 Violeta Hernández Palacios. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Violeta Hernández Palacios
 -/
-import Mathlib.SetTheory.Ordinal.Arithmetic
+import Mathlib.SetTheory.Ordinal.Family
 
 /-!
 # Enumerating sets of ordinals by ordinals
@@ -33,11 +33,6 @@ termination_by o
 
 variable {s : Set Ordinal.{u}}
 
-@[deprecated (since := "2024-09-20")]
-theorem enumOrd_def (o : Ordinal.{u}) :
-    enumOrd s o = sInf (s ∩ { b | ∀ c, c < o → enumOrd s c < b }) := by
-  rw [enumOrd]
-
 theorem enumOrd_le_of_forall_lt (ha : a ∈ s) (H : ∀ b < o, enumOrd s b < a) : enumOrd s o ≤ a := by
   rw [enumOrd]
   exact csInf_le' ⟨ha, H⟩
@@ -61,6 +56,26 @@ theorem enumOrd_mem (hs : ¬ BddAbove s) (o : Ordinal) : enumOrd s o ∈ s :=
 theorem enumOrd_strictMono (hs : ¬ BddAbove s) : StrictMono (enumOrd s) :=
   fun a b ↦ (enumOrd_mem_aux hs b).2 a
 
+theorem enumOrd_injective (hs : ¬ BddAbove s) : Function.Injective (enumOrd s) :=
+  (enumOrd_strictMono hs).injective
+
+theorem enumOrd_inj (hs : ¬ BddAbove s) {a b : Ordinal} : enumOrd s a = enumOrd s b ↔ a = b :=
+  (enumOrd_injective hs).eq_iff
+
+theorem enumOrd_le_enumOrd (hs : ¬ BddAbove s) {a b : Ordinal} :
+    enumOrd s a ≤ enumOrd s b ↔ a ≤ b :=
+  (enumOrd_strictMono hs).le_iff_le
+
+theorem enumOrd_lt_enumOrd (hs : ¬ BddAbove s) {a b : Ordinal} :
+    enumOrd s a < enumOrd s b ↔ a < b :=
+  (enumOrd_strictMono hs).lt_iff_lt
+
+theorem id_le_enumOrd (hs : ¬ BddAbove s) : id ≤ enumOrd s :=
+  (enumOrd_strictMono hs).id_le
+
+theorem le_enumOrd_self (hs : ¬ BddAbove s) {a} : a ≤ enumOrd s a :=
+  (enumOrd_strictMono hs).le_apply
+
 theorem enumOrd_succ_le (hs : ¬ BddAbove s) (ha : a ∈ s) (hb : enumOrd s b < a) :
     enumOrd s (succ b) ≤ a := by
   apply enumOrd_le_of_forall_lt ha
@@ -78,7 +93,7 @@ theorem range_enumOrd (hs : ¬ BddAbove s) : range (enumOrd s) = s := by
     refine ⟨sInf t, (enumOrd_le_of_forall_lt ha ?_).antisymm ?_⟩
     · intro b hb
       by_contra! hb'
-      exact hb.not_le (csInf_le' hb')
+      exact hb.not_ge (csInf_le' hb')
     · exact csInf_mem (s := t) ⟨a, (enumOrd_strictMono hs).id_le a⟩
 
 theorem enumOrd_surjective (hs : ¬ BddAbove s) {b : Ordinal} (hb : b ∈ s) :
@@ -105,6 +120,20 @@ theorem eq_enumOrd (f : Ordinal → Ordinal) (hs : ¬ BddAbove s) :
 
 theorem enumOrd_range {f : Ordinal → Ordinal} (hf : StrictMono f) : enumOrd (range f) = f :=
   (eq_enumOrd _ hf.not_bddAbove_range_of_wellFoundedLT).2 ⟨hf, rfl⟩
+
+/-- If `s` is closed under nonempty suprema, then its enumerator function is normal.
+See also `enumOrd_isNormal_iff_isClosed`. -/
+theorem isNormal_enumOrd (H : ∀ t ⊆ s, t.Nonempty → BddAbove t → sSup t ∈ s) (hs : ¬ BddAbove s) :
+    IsNormal (enumOrd s) := by
+  refine (isNormal_iff_strictMono_limit _).2 ⟨enumOrd_strictMono hs, fun o ho a ha ↦ ?_⟩
+  trans ⨆ b : Iio o, enumOrd s b
+  · refine enumOrd_le_of_forall_lt ?_ (fun b hb ↦ (enumOrd_strictMono hs (lt_succ b)).trans_le ?_)
+    · have : Nonempty (Iio o) := ⟨0, ho.pos⟩
+      apply H _ _ (range_nonempty _) (bddAbove_of_small _)
+      rintro _ ⟨c, rfl⟩
+      exact enumOrd_mem hs c
+    · exact Ordinal.le_iSup _ (⟨_, ho.succ_lt hb⟩ : Iio o)
+  · exact Ordinal.iSup_le fun x ↦ ha _ x.2
 
 @[simp]
 theorem enumOrd_univ : enumOrd Set.univ = id := by
