@@ -492,14 +492,6 @@ theorem support_copy {u v u' v'} (p : G.Walk u v) (hu : u = u') (hv : v = v') :
   subst_vars
   rfl
 
-theorem support_append {u v w : V} (p : G.Walk u v) (p' : G.Walk v w) :
-    (p.append p').support = p.support ++ p'.support.tail := by
-  induction p <;> cases p' <;> simp [*]
-
-@[simp]
-theorem support_reverse {u v : V} (p : G.Walk u v) : p.reverse.support = p.support.reverse := by
-  induction p <;> simp [support_append, *]
-
 @[simp]
 theorem support_ne_nil {u v : V} (p : G.Walk u v) : p.support ≠ [] := by cases p <;> simp
 
@@ -514,9 +506,21 @@ theorem getLast_support {G : SimpleGraph V} {a b : V} (p : G.Walk a b) :
   · simp
   · simpa
 
+theorem support_append {u v w : V} (p : G.Walk u v) (p' : G.Walk v w) :
+    (p.append p').support = p.support ++ p'.support.tail := by
+  induction p <;> cases p' <;> simp [*]
+
+theorem support_append₂ {u v w : V} (p : G.Walk u v) (p' : G.Walk v w) :
+    (p.append p').support = p.support.dropLast ++ p'.support := by
+  induction p <;> simp_all [List.dropLast_cons_of_ne_nil]
+
 theorem tail_support_append {u v w : V} (p : G.Walk u v) (p' : G.Walk v w) :
     (p.append p').support.tail = p.support.tail ++ p'.support.tail := by
   rw [support_append, List.tail_append_of_ne_nil (support_ne_nil _)]
+
+@[simp]
+theorem support_reverse {u v : V} (p : G.Walk u v) : p.reverse.support = p.support.reverse := by
+  induction p <;> simp [support_append, *]
 
 theorem support_eq_cons {u v : V} (p : G.Walk u v) : p.support = u :: p.support.tail := by
   cases p <;> simp
@@ -913,6 +917,13 @@ lemma drop_getVert (p : G.Walk u v) (n m : ℕ) : (p.drop n).getVert m = p.getVe
   | nil => simp [drop]
   | cons => cases n <;> simp_all [drop, Nat.add_right_comm]
 
+@[simp]
+lemma drop_support (p : G.Walk u v) (n : ℕ) :
+    (p.drop n).support = p.support.drop (n ⊓ p.length) := by
+  induction p generalizing n with
+  | nil => simp [drop]
+  | cons => cases n <;> simp_all [drop]
+
 /-- The second vertex of a walk, or the only vertex in a nil walk. -/
 abbrev snd (p : G.Walk u v) : V := p.getVert 1
 
@@ -941,6 +952,12 @@ lemma take_getVert (p : G.Walk u v) (n m : ℕ) : (p.take n).getVert m = p.getVe
   induction p generalizing n m with
   | nil => simp [take]
   | cons => cases n <;> cases m <;> simp_all [take]
+
+@[simp]
+lemma take_support (p : G.Walk u v) (n : ℕ) : (p.take n).support = p.support.take (n + 1) := by
+  induction p generalizing n with
+  | nil => simp [take]
+  | cons => cases n <;> simp_all [take]
 
 /-- The penultimate vertex of a walk, or the only vertex in a nil walk. -/
 abbrev penultimate (p : G.Walk u v) : V := p.getVert (p.length - 1)
@@ -1364,6 +1381,77 @@ theorem map_toDeleteEdges_eq (s : Set (Sym2 V)) {p : G.Walk v w} (hp) :
   intros e
   rw [edges_transfer]
   apply edges_subset_edgeSet p
+
+section IsSubwalk
+
+variable {v w v' w' : V} {p₁ : G.Walk v w} {p₂ : G.Walk v' w'}
+
+/-- `p₁.IsSubwalk p₂` means p₁ is a contiguous sub-walk of p₂. -/
+def IsSubwalk (p₁ : G.Walk v w) (p₂ : G.Walk v' w') := p₁.support <:+: p₂.support
+
+proof_wanted isSubwalk_iff_edges_infix : p₁.IsSubwalk p₂ ↔ p₁.edges <:+: p₂.edges
+proof_wanted isSubwalk_iff_darts_infix : p₁.IsSubwalk p₂ ↔ p₁.darts <:+: p₂.darts
+
+theorem isSubwalk_iff_append_append :
+    p₁.IsSubwalk p₂ ↔ ∃ (ru : G.Walk v' v) (rv : G.Walk w w'), p₂ = (ru.append p₁).append rv := by
+  refine ⟨fun h => ?_, fun h => ?_⟩
+  · obtain ⟨s, t, h⟩ := h
+    have : (s.length + p₁.length) ≤ p₂.length := by
+      rw [Nat.le_iff_lt_add_one, ← length_support]
+      simp only [← h, List.append_assoc, List.length_append, length_support]
+      omega
+    have h₁ : p₂.getVert s.length = v := by
+      simp [p₂.getVert_eq_support_getElem (by omega : s.length ≤ p₂.length), ← h, List.getElem_zero]
+    have h₂ : p₂.getVert (s.length + p₁.length) = w := by
+      simp [p₂.getVert_eq_support_getElem (by omega), ← h,
+        ← p₁.getVert_eq_support_getElem (Nat.le_refl _)]
+    refine ⟨p₂.take s.length |>.copy rfl h₁, p₂.drop (s.length + p₁.length) |>.copy h₂ rfl, ?_⟩
+    apply ext_support
+    simp only [← h, support_append, support_copy, take_support, List.take_append, drop_support,
+      List.tail_drop, List.append_assoc, Nat.add_sub_cancel_left, length_support]
+    rw [Nat.min_eq_left]
+    · rw [List.drop_append, List.drop_append, List.drop_eq_nil_of_le (by omega),
+        List.drop_eq_nil_of_le (by rw [length_support]; omega), p₁.support_eq_cons]
+      simp +arith
+    · simp only [Nat.le_iff_lt_add_one, ← length_support, ← h, List.length_append]
+      rw [length_support]
+      omega
+  · obtain ⟨ru, rv, h⟩ := h
+    rw [IsSubwalk, h, support_append, support_append₂]
+    exact List.infix_append ru.support.dropLast p₁.support rv.support.tail
+
+theorem isSubwalk_of_append_left {v w u : V} {p₁ : G.Walk v w} {p₂ : G.Walk w u} {p₃ : G.Walk v u}
+    (h : p₃ = p₁.append p₂) : p₁.IsSubwalk p₃ :=
+  isSubwalk_iff_append_append.mpr ⟨nil, p₂, by simp_all⟩
+
+theorem isSubwalk_of_append_right {v w u : V} {p₁ : G.Walk v w} {p₂ : G.Walk w u} {p₃ : G.Walk v u}
+    (h : p₃ = p₁.append p₂) : p₂.IsSubwalk p₃ :=
+  isSubwalk_iff_append_append.mpr ⟨p₁, nil, by simp_all⟩
+
+namespace IsSubwalk
+
+theorem support_subset (h : p₁.IsSubwalk p₂) : p₁.support ⊆ p₂.support := by
+  obtain ⟨_, _, h⟩ := h
+  simp [← h]
+
+theorem edges_subset (h : p₁.IsSubwalk p₂) : p₁.edges ⊆ p₂.edges := by
+  obtain ⟨_, _, h⟩ := isSubwalk_iff_append_append.mp h
+  simp [h]
+
+theorem darts_subset (h : p₁.IsSubwalk p₂) : p₁.darts ⊆ p₂.darts := by
+  obtain ⟨_, _, h⟩ := isSubwalk_iff_append_append.mp h
+  simp [h]
+
+theorem length_le (h : p₁.IsSubwalk p₂) : p₁.length ≤ p₂.length := by
+  obtain ⟨_, _, h⟩ := isSubwalk_iff_append_append.mp h
+  simp only [h, length_append]
+  omega
+
+--theorem bar (h : p₁.IsSubwalk p₂) (h₂ : p₂.IsPath) : p₁.IsPath := by sorry
+--theorem bar2 (h : p₁.IsSubwalk p₂) (h₂ : p₂.IsTrail) : p₁.IsTrail := by sorry
+
+end IsSubwalk
+end IsSubwalk
 
 end Walk
 

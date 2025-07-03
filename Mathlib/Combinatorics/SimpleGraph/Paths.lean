@@ -156,6 +156,12 @@ theorem IsTrail.of_append_right {u v w : V} {p : G.Walk u v} {q : G.Walk v w}
   rw [isTrail_def, edges_append, List.nodup_append] at h
   exact ⟨h.2.1⟩
 
+theorem isTrail_of_isSubwalk {v w v' w' : V} {p₁ : G.Walk v w} {p₂ : G.Walk v' w'}
+    (h : p₁.IsSubwalk p₂) (h₂ : p₂.IsTrail) : p₁.IsTrail := by
+  obtain ⟨_, _, h⟩ := isSubwalk_iff_append_append.mp h
+  rw [h] at h₂
+  exact h₂.of_append_left.of_append_right
+
 theorem IsTrail.count_edges_le_one [DecidableEq V] {u v : V} {p : G.Walk u v} (h : p.IsTrail)
     (e : Sym2 V) : p.edges.count e ≤ 1 :=
   List.nodup_iff_count_le_one.mp h.edges_nodup e
@@ -212,6 +218,12 @@ theorem IsPath.of_append_right {u v w : V} {p : G.Walk u v} {q : G.Walk v w}
   rw [← isPath_reverse_iff] at h ⊢
   rw [reverse_append] at h
   apply h.of_append_left
+
+theorem isPath_of_isSubwalk {v w v' w' : V} {p₁ : G.Walk v w} {p₂ : G.Walk v' w'}
+    (h : p₁.IsSubwalk p₂) (h₂ : p₂.IsPath) : p₁.IsPath := by
+  obtain ⟨_, _, h⟩ := isSubwalk_iff_append_append.mp h
+  rw [h] at h₂
+  exact h₂.of_append_left.of_append_right
 
 lemma IsPath.of_adj {G : SimpleGraph V} {u v : V} (h : G.Adj u v) : h.toWalk.IsPath := by
   aesop
