@@ -327,6 +327,7 @@ So we spell out all the other ones.
 -/
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 /--
 Comonoid objects in a braided category form a monoidal category.
 

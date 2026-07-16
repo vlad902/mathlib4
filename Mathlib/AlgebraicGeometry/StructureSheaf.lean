@@ -560,6 +560,7 @@ the stalk of `structureSheaf R` at `x`. -/
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 @[elementwise, reassoc]
 public lemma algebraMap_germ
     (U : Opens (PrimeSpectrum.Top R)) (x : PrimeSpectrum.Top R) (hxU : x ∈ U) :

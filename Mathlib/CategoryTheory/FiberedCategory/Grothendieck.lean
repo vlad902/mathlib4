@@ -56,6 +56,7 @@ abbrev homCartesianLift {a' : ∫ᶜ F} (g : a'.1 ⟶ R) (φ' : a' ⟶ ⟨S, a�
     have : φ'.base = g ≫ f := by simpa using IsHomLift.fac' (forget F) (g ≫ f) φ'
     φ'.fiber ≫ eqToHom (by simp [this]) ≫ (F.mapComp f.op.toLoc g.op.toLoc).hom.toNatTrans.app a
 
+set_option backward.isDefEq.respectTransparency.types false in
 instance isHomLift_homCartesianLift {a' : ∫ᶜ F} {φ' : a' ⟶ ⟨S, a⟩} {g : a'.1 ⟶ R}
     [IsHomLift (forget F) (g ≫ f) φ'] : IsHomLift (forget F) g (homCartesianLift f g φ') :=
   IsHomLift.map (forget F) (homCartesianLift f g φ')
@@ -96,6 +97,7 @@ def ι : F.obj ⟨op S⟩ ⥤ ∫ᶜ F where
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 /-- The natural isomorphism encoding `comp_const`. -/
 @[simps!]
 def compIso : (ι F S) ⋙ forget F ≅ (const (F.obj ⟨op S⟩)).obj S :=

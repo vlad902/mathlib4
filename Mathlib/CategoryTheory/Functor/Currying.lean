@@ -110,10 +110,12 @@ def flipping : C ⥤ D ⥤ E ≌ D ⥤ C ⥤ E where
   counitIso := NatIso.ofComponents (fun _ ↦ NatIso.ofComponents
     (fun _ ↦ NatIso.ofComponents (fun _ ↦ Iso.refl _)))
 
+set_option backward.isDefEq.respectTransparency.types false in
 /-- The functor `uncurry : (C ⥤ D ⥤ E) ⥤ C × D ⥤ E` is fully faithful. -/
 def fullyFaithfulUncurry : (uncurry : (C ⥤ D ⥤ E) ⥤ C × D ⥤ E).FullyFaithful :=
   currying.fullyFaithfulFunctor
 
+set_option backward.isDefEq.respectTransparency.types false in
 /-- The functor `curry : (C × D ⥤ E) ⥤ C ⥤ D ⥤ E` is fully faithful. -/
 def fullyFaithfulCurry : (curry : (C × D ⥤ E) ⥤ C ⥤ D ⥤ E).FullyFaithful :=
   currying.fullyFaithfulInverse
@@ -160,6 +162,7 @@ variable (B C D E)
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 /-- A version of `CategoryTheory.whiskeringRight` for bifunctors, obtained by uncurrying,
 applying `whiskeringRight` and currying back
 -/

@@ -1077,6 +1077,7 @@ end Adjunction
 
 namespace Equivalence
 
+set_option backward.isDefEq.respectTransparency.types false in
 set_option backward.defeqAttrib.useBackward true in
 /-- An equivalence of categories lifts to an equivalence of their monoid objects. -/
 @[to_additive (attr := simps)
@@ -1150,6 +1151,7 @@ def unitIso :
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 /-- Auxiliary definition for `counitIso`. -/
 @[to_additive (attr := simps!) /-- Auxiliary definition for `counitIso`. -/]
 def counitIsoAux (F : Mon C) :

@@ -37,6 +37,7 @@ variable (f : b₀ ⟶ b₀) (hf : f = 𝟙 b₀) (a : X ⟶ Y)
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc]
 lemma mapId'_hom_naturality :
     (F.map f).toFunctor.map a ≫ (F.mapId' f hf).hom.toNatTrans.app Y =
@@ -45,6 +46,7 @@ lemma mapId'_hom_naturality :
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc]
 lemma mapId'_inv_naturality :
     (F.mapId' f hf).inv.toNatTrans.app X ≫ (F.map f).toFunctor.map a =
@@ -60,6 +62,7 @@ variable (f : b₀ ⟶ b₁) (g : b₁ ⟶ b₂) (fg : b₀ ⟶ b₂)
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc]
 lemma mapComp'_hom_naturality :
     (F.map fg).toFunctor.map a ≫ (F.mapComp' f g fg hfg).hom.toNatTrans.app Y =

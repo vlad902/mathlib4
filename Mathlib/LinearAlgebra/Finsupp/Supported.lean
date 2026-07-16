@@ -192,6 +192,7 @@ lemma codisjoint_supported_supported_iff [Nontrivial M] {s t : Set α} :
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 /-- Interpret `Finsupp.restrictSupportEquiv` as a linear equivalence between
 `supported M R s` and `s →₀ M`. -/
 @[simps!] def supportedEquivFinsupp (s : Set α) : supported M R s ≃ₗ[R] s →₀ M := by

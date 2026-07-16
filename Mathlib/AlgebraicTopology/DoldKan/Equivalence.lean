@@ -148,6 +148,7 @@ def Γ : ChainComplex A ℕ ⥤ SimplicialObject A :=
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 /-- The comparison isomorphism between `normalizedMooreComplex A` and
 the functor `Idempotents.DoldKan.N` from the pseudoabelian case -/
 @[simps!]

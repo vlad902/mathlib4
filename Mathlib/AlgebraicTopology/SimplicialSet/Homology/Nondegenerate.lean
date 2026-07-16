@@ -120,6 +120,7 @@ lemma ιNormalizedChainComplex_d {n : ℕ} (x : X _⦋n + 1⦌) :
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc]
 lemma ιNormalizedChainComplex_fromNormalizedChainComplex_f (x : X _⦋n⦌) :
     X.ιNormalizedChainComplex x ≫ (X.fromNormalizedChainComplex R).f n =
@@ -189,6 +190,7 @@ section
 
 variable {X Y}
 
+set_option backward.isDefEq.respectTransparency false in
 @[reassoc]
 lemma chainComplexMap_PInfty :
     chainComplexMap f R ≫ PInfty = PInfty ≫ chainComplexMap f R :=
@@ -200,6 +202,7 @@ noncomputable def normalizedChainComplexMap :
     X.normalizedChainComplex R ⟶ Y.normalizedChainComplex R :=
   X.fromNormalizedChainComplex R ≫ chainComplexMap f R ≫ Y.toNormalizedChainComplex R
 
+set_option backward.isDefEq.respectTransparency false in
 @[reassoc (attr := simp)]
 lemma toNormalizedChainComplex_normalizedChainComplexMap :
     X.toNormalizedChainComplex R ≫ normalizedChainComplexMap f R =

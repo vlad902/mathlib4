@@ -151,6 +151,7 @@ def opCounitIso : opInverse V c ⋙ opFunctor V c ≅ 𝟭 (HomologicalComplex V
   NatIso.ofComponents
     fun X => HomologicalComplex.Hom.isoOfComponents fun _ => Iso.refl _
 
+set_option backward.isDefEq.respectTransparency.types false in
 /-- Given a category of complexes with objects in `V`, there is a natural equivalence between its
 opposite category and a category of complexes with objects in `Vᵒᵖ`. -/
 @[simps]
@@ -209,6 +210,7 @@ def unopCounitIso : unopInverse V c ⋙ unopFunctor V c ≅ 𝟭 (HomologicalCom
   NatIso.ofComponents
     fun X => HomologicalComplex.Hom.isoOfComponents fun _ => Iso.refl _
 
+set_option backward.isDefEq.respectTransparency.types false in
 /-- Given a category of complexes with objects in `Vᵒᵖ`, there is a natural equivalence between its
 opposite category and a category of complexes with objects in `V`. -/
 @[simps]
@@ -380,6 +382,7 @@ variable {K L : HomologicalComplex V c} (φ : K ⟶ L) (i : ι)
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc]
 lemma homologyOp_hom_naturality :
     homologyMap ((opFunctor _ _).map φ.op) _ ≫ (K.homologyOp i).hom =
@@ -388,6 +391,7 @@ lemma homologyOp_hom_naturality :
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc]
 lemma opcyclesOpIso_hom_naturality :
     opcyclesMap ((opFunctor _ _).map φ.op) _ ≫ (K.opcyclesOpIso i).hom =
@@ -396,6 +400,7 @@ lemma opcyclesOpIso_hom_naturality :
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency false in
 @[reassoc]
 lemma opcyclesOpIso_inv_naturality :
     (cyclesMap φ i).op ≫ (K.opcyclesOpIso i).inv =
@@ -404,6 +409,7 @@ lemma opcyclesOpIso_inv_naturality :
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc]
 lemma cyclesOpIso_hom_naturality :
     cyclesMap ((opFunctor _ _).map φ.op) _ ≫ (K.cyclesOpIso i).hom =

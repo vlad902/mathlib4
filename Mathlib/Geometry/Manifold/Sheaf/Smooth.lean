@@ -128,6 +128,7 @@ def smoothSheaf.evalAt (x : TopCat.of M) (U : OpenNhds x)
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 @[simp, reassoc, elementwise] lemma smoothSheaf.ι_evalHom (x : TopCat.of M) (U) :
     colimit.ι ((OpenNhds.inclusion x).op ⋙ (smoothSheaf IM I M N).obj) U ≫
     smoothSheaf.evalHom IM I N x =
@@ -358,6 +359,7 @@ def smoothSheafCommRing.eval (x : M) : (smoothSheafCommRing IM I M R).presheaf.s
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 @[simp, reassoc, elementwise] lemma smoothSheafCommRing.ι_evalHom (x : TopCat.of M) (U) :
     colimit.ι ((OpenNhds.inclusion x).op ⋙ _) U ≫ smoothSheafCommRing.evalHom IM I M R x =
     smoothSheafCommRing.evalAt _ _ _ _ _ _ :=
@@ -408,6 +410,7 @@ variable {IM I M R}
     = f ⟨x, hx⟩ :=
   smoothSheafCommRing.evalHom_germ IM I M R U x hx f
 
+set_option backward.isDefEq.respectTransparency.types false in
 /-- A smooth function `f : M → N` induces a morphism of sheaves (of rings) `𝒪_N ⟶ f_* 𝒪_M`,
 by pre-composing with `f`. -/
 @[simps! -isSimp hom_app_hom_apply]

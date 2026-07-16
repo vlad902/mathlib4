@@ -31,6 +31,7 @@ variable {J₁ J₂ : Type*} [Category* J₁] [Category* J₂]
   {C₁ C₂ C : Type*} [Category* C₁] [Category* C₂] [Category* C]
 
 set_option backward.defeqAttrib.useBackward true in
+set_option backward.isDefEq.respectTransparency false in
 /-- Given a bifunctor `G : C₁ ⥤ C₂ ⥤ C`, diagrams `K₁ : J₁ ⥤ C₁` and `K₂ : J₂ ⥤ C₂`, and cocones
 over these diagrams, `G.mapCocone₂ c₁ c₂` is the cocone over the diagram `J₁ × J₂ ⥤ C` obtained
 by applying `G` to both `c₁` and `c₂`. -/
@@ -156,6 +157,7 @@ lemma ι_comp_isoObjConePointsOfIsColimit_inv (j : J₁ × J₂) :
   dsimp [isoObjCoconePointsOfIsColimit, Functor.mapCocone₂]
   cat_disch
 
+set_option backward.isDefEq.respectTransparency false in
 /-- Characterize the forward direction of the isomorphism
 `PreservesColimit₂.isoObjCoconePointsOfIsColimit` w.r.t. the canonical maps to the colimit. -/
 @[reassoc (attr := simp)]
@@ -184,6 +186,7 @@ noncomputable def isoColimitUncurryWhiskeringLeft₂ :
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 /-- Characterize the forward direction of the isomorphism
 `PreservesColimit₂.isoColimitUncurryWhiskeringLeft₂` w.r.t. the canonical maps to the colimit. -/
 @[reassoc (attr := simp)]
@@ -289,6 +292,7 @@ lemma isoObjConePointsOfIsLimit_hom_comp_π (j : J₁ × J₂) :
   dsimp [isoObjConePointsOfIsLimit, Functor.mapCocone₂]
   cat_disch
 
+set_option backward.isDefEq.respectTransparency false in
 /-- Characterize the inverse direction of the isomorphism
 `PreservesLimit₂.isoObjConePointsOfIsLimit` w.r.t. the canonical maps to the limit. -/
 @[reassoc (attr := simp)]
@@ -317,6 +321,7 @@ noncomputable def isoLimitUncurryWhiskeringLeft₂ :
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 /-- Characterize the inverse direction of the isomorphism
 `PreservesLimit₂.isoLimitUncurryWhiskeringLeft₂` w.r.t. the canonical maps to the limit. -/
 @[reassoc (attr := simp)]

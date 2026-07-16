@@ -178,6 +178,7 @@ def uliftYoneda [J.Subcanonical] : C ⥤ Sheaf J (Type (max v w)) :=
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 /-- If `C` is a category with `[Category.{max w v} C]`, this is the isomorphism
 `uliftYoneda.{w} (C := C) ≅ yoneda`. -/
 @[simps!]
@@ -199,6 +200,7 @@ def yonedaCompSheafToPresheaf :
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 /-- A variant of `yonedaCompSheafToPresheaf` with a raise in the universe level. -/
 @[simps! +dsimpLhs]
 def uliftYonedaCompSheafToPresheaf :

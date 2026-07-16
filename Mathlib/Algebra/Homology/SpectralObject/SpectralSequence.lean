@@ -437,6 +437,7 @@ end HomologyData
 
 variable [X.HasSpectralSequence data]
 
+set_option backward.isDefEq.respectTransparency false in
 open HomologyData in
 /-- The homology data for the short complex given by differentials on the
 `r`th page of the spectral sequence which shows that the homology identifies
@@ -581,6 +582,7 @@ variable (r r' : ℤ) (hrr' : r + 1 = r') (hr : r₀ ≤ r)
 
 #adaptation_note
 /-- `respectTransparency.types true` changes the auto-generated lemmas' signature -/
+set_option backward.isDefEq.respectTransparency.types false in
 unseal spectralSequence in
 /-- The homology data for the short complexes given by the differentials
 of a spectral sequence attached to a spectral object in an abelian category. -/
