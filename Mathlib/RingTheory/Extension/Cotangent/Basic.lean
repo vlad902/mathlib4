@@ -350,7 +350,6 @@ variable {P : Extension R S}
 noncomputable
 instance : AddCommGroup P.H1Cotangent := by delta Extension.H1Cotangent; infer_instance
 
-set_option backward.isDefEq.respectTransparency false in
 noncomputable
 instance {R₀} [CommRing R₀] [Algebra R₀ S] [Module R₀ P.Cotangent]
     [IsScalarTower R₀ S P.Cotangent] : Module R₀ P.H1Cotangent := by
@@ -361,7 +360,6 @@ instance {R₀} [CommRing R₀] [Algebra R₀ S] [Module R₀ P.Cotangent]
 @[simp] lemma H1Cotangent.val_smul {R₀} [CommRing R₀] [Algebra R₀ S] [Module R₀ P.Cotangent]
     [IsScalarTower R₀ S P.Cotangent] (r : R₀) (x : P.H1Cotangent) : (r • x).1 = r • x.1 := rfl
 
-set_option backward.isDefEq.respectTransparency false in
 noncomputable
 instance {R₁ R₂} [CommRing R₁] [CommRing R₂] [Algebra R₁ R₂]
     [Algebra R₁ S] [Algebra R₂ S]

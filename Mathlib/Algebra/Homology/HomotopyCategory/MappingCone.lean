@@ -256,7 +256,6 @@ lemma id_X (p q : ℤ) (hpq : p + 1 = q) :
     Cochain.comp_v _ _ (add_neg_cancel 1) p q p hpq (by lia)]
     using Cochain.congr_v (id φ) p p (add_zero p)
 
-set_option backward.isDefEq.respectTransparency.types false in
 set_option backward.defeqAttrib.useBackward true in
 @[reassoc]
 lemma inl_v_d (i j k : ℤ) (hij : i + (-1) = j) (hik : k + (-1) = i) :
@@ -283,7 +282,6 @@ lemma d_fst_v' (i j : ℤ) (hij : i + 1 = j) :
       -(fst φ).1.v (i - 1) i (by lia) ≫ F.d i j :=
   d_fst_v φ (i - 1) i j (by lia) hij
 
-set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc]
 lemma d_snd_v (i j : ℤ) (hij : i + 1 = j) :
     (mappingCone φ).d i j ≫ (snd φ).v j j (add_zero _) =

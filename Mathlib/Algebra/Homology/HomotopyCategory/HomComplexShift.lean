@@ -53,7 +53,6 @@ def rightShift (a n' : ℤ) (hn' : n' + a = n) : Cochain K (L⟦a⟧) n' :=
   Cochain.mk (fun p q hpq => γ.v p (p + n) rfl ≫
     (L.shiftFunctorObjXIso a q (p + n) (by lia)).inv)
 
-set_option backward.isDefEq.respectTransparency false in
 lemma rightShift_v (a n' : ℤ) (hn' : n' + a = n) (p q : ℤ) (hpq : p + n' = q)
     (p' : ℤ) (hp' : p + n = p') :
     (γ.rightShift a n' hn').v p q hpq = γ.v p p' hp' ≫

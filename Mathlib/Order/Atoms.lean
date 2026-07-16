@@ -701,7 +701,6 @@ lemma eq_setOf_le_sSup_and_isAtom {α} [CompleteAtomicBooleanAlgebra α] {S : Se
   · simpa using hatom.1
   assumption
 
-set_option backward.isDefEq.respectTransparency false in
 /--
 Representation theorem for complete atomic boolean algebras:
 For a complete atomic Boolean algebra `α`, `toSetOfIsAtom` is an order isomorphism

@@ -59,7 +59,6 @@ def colimit.smul (r : (R ⋙ forget _).ColimitType) (m : (M ⋙ forget _).Colimi
 
 #adaptation_note /-- As of nightly-2026-02-10, we need to increase the maxHeartbeats limits here. -/
 set_option backward.defeqAttrib.useBackward true in
-set_option backward.isDefEq.respectTransparency false in
 set_option synthInstance.maxHeartbeats 40000 in --
 /-- (Implementation). The module structure on `AddCommGrpCat.FilteredColimits.colimit`. -/
 noncomputable abbrev filteredColimitsModule : Module (RingCat.FilteredColimits.colimit R)
@@ -129,7 +128,6 @@ noncomputable abbrev IsColimit.module {cR : Cocone R} (hcR : IsColimit cR) {cM :
           (RingCat.FilteredColimits.colimitCoconeIsColimit R)).ringCatIsoToRingEquiv.toRingHom
 
 set_option backward.defeqAttrib.useBackward true in
-set_option backward.isDefEq.respectTransparency false in
 lemma IsColimit.ι_smul {cR : Cocone R} (hcR : IsColimit cR) {cM : Cocone M}
     (hcM : IsColimit cM) (i : C) (r : R.obj i) (m : M.obj i) :
     letI := IsColimit.module R M H hcR hcM
