@@ -140,6 +140,7 @@ lemma rightUnitor_inv_left_fst (Y : Over X) :
     (ρ_ Y).inv.left ≫ pullback.fst _ (𝟙 X) = 𝟙 _ :=
   limit.lift_π _ _
 
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc (attr := simp)]
 lemma rightUnitor_inv_left_snd (Y : Over X) :
     (ρ_ Y).inv.left ≫ pullback.snd _ (𝟙 X) = Y.hom :=
