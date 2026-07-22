@@ -298,7 +298,6 @@ protected def rightOp (F : Cᵒᵖ ⥤ D) : C ⥤ Dᵒᵖ where
 lemma rightOp_map_unop {F : Cᵒᵖ ⥤ D} {X Y} (f : X ⟶ Y) :
     (F.rightOp.map f).unop = F.map f.op := rfl
 
-set_option backward.isDefEq.respectTransparency.types false in
 set_option backward.defeqAttrib.useBackward true in
 instance {F : C ⥤ D} [Full F] : Full F.op where
   map_surjective f := ⟨(F.preimage f.unop).op, by simp⟩
@@ -673,7 +672,6 @@ theorem op_trans {H : C ⥤ D} (α : F ≅ G) (β : G ≅ H) :
 @[simp]
 theorem op_symm (α : F ≅ G) : NatIso.op α.symm = (NatIso.op α).symm := rfl
 
-set_option backward.isDefEq.respectTransparency false in
 /-- The natural isomorphism between functors `G ≅ F` induced by a natural isomorphism
 between the opposite functors `F.op ≅ G.op`. -/
 @[simps]

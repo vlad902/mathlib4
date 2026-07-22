@@ -85,7 +85,6 @@ def inverseFunctor : (C ≌ D) ⥤ (D ⥤ C)ᵒᵖ :=
 
 variable {C D}
 
-set_option backward.isDefEq.respectTransparency.types false in
 /-- The `inverse` functor sends an equivalence to its inverse. -/
 @[simps!]
 def inverseFunctorObjIso (e : C ≌ D) :
@@ -100,7 +99,6 @@ lemma inverseFunctorMapIso_symm_eq_isoInverseOfIsoFunctor {e f : C ≌ D} (α : 
     Iso.isoInverseOfIsoFunctor ((functorFunctor _ _).mapIso α) := by
   cat_disch
 
-set_option backward.isDefEq.respectTransparency.types false in
 /-- An "unopped" version of the equivalence `inverseFunctorObj'`. -/
 @[simps!]
 def inverseFunctorObj' (e : C ≌ D) :
