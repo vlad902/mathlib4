@@ -81,36 +81,42 @@ lemma snd_left {R S : Over X} : (snd R S).left = pullback.snd _ _ := rfl
 @[simp]
 lemma toUnit_left {R : Over X} : (toUnit R).left = R.hom := rfl
 
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc (attr := simp)]
 lemma associator_hom_left_fst (R S T : Over X) :
     (α_ R S T).hom.left ≫ pullback.fst _ (pullback.fst _ _ ≫ _) =
       pullback.fst _ _ ≫ pullback.fst _ _ :=
   limit.lift_π _ _
 
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc (attr := simp)]
 lemma associator_hom_left_snd_fst (R S T : Over X) :
     (α_ R S T).hom.left ≫ pullback.snd _ (pullback.fst _ _ ≫ _) ≫ pullback.fst _ _ =
       pullback.fst _ _ ≫ pullback.snd _ _ :=
   (limit.lift_π_assoc _ _ _).trans (limit.lift_π _ _)
 
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc (attr := simp)]
 lemma associator_hom_left_snd_snd (R S T : Over X) :
     (α_ R S T).hom.left ≫ pullback.snd _ (pullback.fst _ _ ≫ _) ≫ pullback.snd _ _ =
       pullback.snd _ _ :=
   (limit.lift_π_assoc _ _ _).trans (limit.lift_π _ _)
 
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc (attr := simp)]
 lemma associator_inv_left_fst_fst (R S T : Over X) :
     (α_ R S T).inv.left ≫ pullback.fst (pullback.fst _ _ ≫ _) _ ≫ pullback.fst _ _ =
       pullback.fst _ _ :=
   (limit.lift_π_assoc _ _ _).trans (limit.lift_π _ _)
 
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc (attr := simp)]
 lemma associator_inv_left_fst_snd (R S T : Over X) :
     (α_ R S T).inv.left ≫ pullback.fst (pullback.fst _ _ ≫ _) _ ≫ pullback.snd _ _ =
       pullback.snd _ _ ≫ pullback.fst _ _ :=
   (limit.lift_π_assoc _ _ _).trans (limit.lift_π _ _)
 
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc (attr := simp)]
 lemma associator_inv_left_snd (R S T : Over X) :
     (α_ R S T).inv.left ≫ pullback.snd (pullback.fst _ _ ≫ _) _ =
@@ -121,11 +127,13 @@ lemma associator_inv_left_snd (R S T : Over X) :
 lemma leftUnitor_hom_left (Y : Over X) :
     (λ_ Y).hom.left = pullback.snd _ _ := rfl
 
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc (attr := simp)]
 lemma leftUnitor_inv_left_fst (Y : Over X) :
     (λ_ Y).inv.left ≫ pullback.fst (𝟙 X) _ = Y.hom :=
   limit.lift_π _ _
 
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc (attr := simp)]
 lemma leftUnitor_inv_left_snd (Y : Over X) :
     (λ_ Y).inv.left ≫ pullback.snd (𝟙 X) _ = 𝟙 Y.left :=
@@ -135,6 +143,7 @@ lemma leftUnitor_inv_left_snd (Y : Over X) :
 lemma rightUnitor_hom_left (Y : Over X) :
     (ρ_ Y).hom.left = pullback.fst _ (𝟙 X) := rfl
 
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc (attr := simp)]
 lemma rightUnitor_inv_left_fst (Y : Over X) :
     (ρ_ Y).inv.left ≫ pullback.fst _ (𝟙 X) = 𝟙 _ :=
@@ -151,11 +160,13 @@ lemma rightUnitor_inv_left_snd (Y : Over X) :
 lemma whiskerLeft_left {R S T : Over X} (f : S ⟶ T) :
     (R ◁ f).left = pullback.map _ _ _ _ (𝟙 _) f.left (𝟙 _) (by simp) (by simp) := rfl
 
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc (attr := simp)]
 lemma whiskerLeft_left_fst {R S T : Over X} (f : S ⟶ T) :
     (R ◁ f).left ≫ pullback.fst _ _ = pullback.fst _ _ :=
   (limit.lift_π _ _).trans (Category.comp_id _)
 
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc (attr := simp)]
 lemma whiskerLeft_left_snd {R S T : Over X} (f : S ⟶ T) :
     (R ◁ f).left ≫ pullback.snd _ _ = pullback.snd _ _ ≫ f.left :=
@@ -164,11 +175,13 @@ lemma whiskerLeft_left_snd {R S T : Over X} (f : S ⟶ T) :
 lemma whiskerRight_left {R S T : Over X} (f : S ⟶ T) :
     (f ▷ R).left = pullback.map _ _ _ _ f.left (𝟙 _) (𝟙 _) (by simp) (by simp) := rfl
 
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc (attr := simp)]
 lemma whiskerRight_left_fst {R S T : Over X} (f : S ⟶ T) :
     (f ▷ R).left ≫ pullback.fst _ _ = pullback.fst _ _ ≫ f.left :=
   limit.lift_π _ _
 
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc (attr := simp)]
 lemma whiskerRight_left_snd {R S T : Over X} (f : S ⟶ T) :
     (f ▷ R).left ≫ pullback.snd _ _ = pullback.snd _ _ :=
@@ -177,12 +190,14 @@ lemma whiskerRight_left_snd {R S T : Over X} (f : S ⟶ T) :
 lemma tensorHom_left {R S T U : Over X} (f : R ⟶ S) (g : T ⟶ U) :
     (f ⊗ₘ g).left = pullback.map _ _ _ _ f.left g.left (𝟙 _) (by simp) (by simp) := rfl
 
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc (attr := simp)]
 lemma tensorHom_left_fst {S U : C} {R T : Over X} (fS : S ⟶ X) (fU : U ⟶ X)
     (f : R ⟶ mk fS) (g : T ⟶ mk fU) :
     (f ⊗ₘ g).left ≫ pullback.fst fS fU = pullback.fst R.hom T.hom ≫ f.left :=
   limit.lift_π _ _
 
+set_option backward.isDefEq.respectTransparency.types false in
 @[reassoc (attr := simp)]
 lemma tensorHom_left_snd {S U : C} {R T : Over X} (fS : S ⟶ X) (fU : U ⟶ X)
     (f : R ⟶ mk fS) (g : T ⟶ mk fU) :
